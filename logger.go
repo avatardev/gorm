@@ -16,6 +16,8 @@ var (
 	defaultLogger            = Logger{log.New(os.Stdout, "\r\n", 0)}
 	sqlRegexp                = regexp.MustCompile(`\?`)
 	numericPlaceHolderRegexp = regexp.MustCompile(`\$\d+`)
+
+	sqlExp				     = ""
 )
 
 func isPrintable(s string) bool {
@@ -106,6 +108,7 @@ var LogFormatter = func(values ...interface{}) (messages []interface{}) {
 			}
 
 			messages = append(messages, sql)
+			sqlExp = sql
 			messages = append(messages, fmt.Sprintf(" \n\033[36;31m[%v]\033[0m ", strconv.FormatInt(values[5].(int64), 10)+" rows affected or returned "))
 		} else {
 			messages = append(messages, "\033[31;1m")
@@ -134,6 +137,10 @@ type Logger struct {
 // Print format & print log
 func (logger Logger) Print(values ...interface{}) {
 	logger.Println(LogFormatter(values...)...)
+}
+
+func (Logger) GetSQL() string {
+	return sqlExp
 }
 
 type nopLogger struct{}
