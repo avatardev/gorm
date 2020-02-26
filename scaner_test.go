@@ -6,7 +6,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/jinzhu/gorm"
+	"github.com/avatardev/gorm"
 )
 
 func TestScannableSlices(t *testing.T) {
